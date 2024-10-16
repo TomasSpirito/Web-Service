@@ -32,17 +32,41 @@ export class AuthService {
     return this.extractUserData(newUser);
   } 
 
-  // Método para iniciar sesión
-  async login(loginData: LoginUserDto): Promise<{ access_token: string }> {
-    const user = await this.usersService.findByEmail(loginData.email);
+  // Método para iniciar sesión // login anterior
+  // async login(loginData: LoginUserDto): Promise<{ access_token: string }> {
+  //   // Aquí buscamos al usuario usando el correo o el nombre de usuario
+  //   const user = await this.usersService.findByEmail(loginData.email);
     
-    if (!user || !(await this.validatePassword(loginData.password, user.password))) {
-      throw new UnauthorizedException('Correo electrónico o contraseña inválidos');
-    }
+  //   if (!user || !(await this.validatePassword(loginData.password, user.password))) {
+  //     throw new UnauthorizedException('Correo electrónico o contraseña inválidos');
+  //   }
 
-    const token = this.jwtService.sign({ email: user.email, id: user.id });
-    return { access_token: token };
+  //   const token = this.jwtService.sign({ email: user.email, id: user.id });
+  //   return { access_token: token };
+  // }
+
+//login nuevo
+async login({email, password}:LoginUserDto) {
+  const user = await this.usersService.findByEmail(email);
+
+  if(!user) {
+    throw new UnauthorizedException('Correo electrónico invalido');
   }
+
+  const isPasswordValid = await bcryptjs.compare(password,user.password);
+
+  if(!isPasswordValid) {
+    throw new UnauthorizedException('Contraseña invalida');
+  }
+
+  const payload = { email: user.email};
+
+  const token = await this.jwtService.signAsync(payload);
+  return { 
+    access_token: token
+  }
+
+}
 
   // Método privado para hashear contraseñas
   private async hashPassword(password: string): Promise<string> {
@@ -62,4 +86,4 @@ export class AuthService {
       email: user.email,
     };
   }
-}  
+}

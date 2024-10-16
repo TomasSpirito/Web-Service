@@ -12,11 +12,20 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": true,  // Cambiado a true para mayor seguridad
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true  // Añadido para interoperabilidad de módulos
-  }
+    "strictNullChecks": true,  // Para mayor seguridad
+    "noImplicitAny": true, // Cambiado a true para evitar el uso implícito de 'any'
+    "strictBindCallApply": true, // Cambiado a true para mayor seguridad
+    "forceConsistentCasingInFileNames": true, // Cambiado a true para evitar errores de nombres de archivos
+    "noFallthroughCasesInSwitch": true, // Cambiado a true para evitar fallos en el switch
+    "esModuleInterop": true, // Para interoperabilidad de módulos
+    "strict": true // Activa todas las verificaciones estrictas
+  },
+  "include": [
+    "src/**/*.ts" // Incluye todos los archivos TypeScript en la carpeta src
+  ],
+  "exclude": [
+    "node_modules", // Excluye node_modules
+    "dist" // Excluye el directorio de salida
+  ]
 }
+

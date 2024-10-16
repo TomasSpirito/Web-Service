@@ -22,7 +22,7 @@ export class UsersController {
     // Endpoint para obtener un usuario por ID
     @Get(':id')
     async findOne(@Param('id') id: number): Promise<User> {
-        return this.usersService.findOne(id);
+        return this.usersService.findById(id);
     }
 
     // Endpoint para actualizar un usuario
