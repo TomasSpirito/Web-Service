@@ -3,7 +3,7 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcryptjs'; // Cambiado a bcryptjs
+
 
 @Injectable()
 export class UsersService {
@@ -27,10 +27,6 @@ export class UsersService {
     if (!user.password) {
       throw new BadRequestException('Password is required');
     }
-
-    // Encripta la contraseña antes de guardar
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
 
     const newUser = this.userRepository.create(user);
     return this.userRepository.save(newUser);
