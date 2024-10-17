@@ -6,6 +6,15 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto'; 
 
+export interface RegisterResponse {
+  message: string;
+  username: string;
+}
+
+export interface LoginResponse {
+  message: string;
+  access_token: string;
+}
 @Injectable()
 export class AuthService {
   constructor(
@@ -14,7 +23,7 @@ export class AuthService {
   ) {}
 
   // Método para registrar un nuevo usuario
-  async register(userData: CreateUserDto): Promise<{ id: number; username: string; email: string }> {
+  async register(userData: CreateUserDto): Promise<RegisterResponse> {
     // Verificar si el usuario ya existe por correo electrónico
     const existingUser = await this.usersService.findByEmail(userData.email);
     if (existingUser) {
@@ -22,14 +31,16 @@ export class AuthService {
     }
 
     const hashedPassword = await this.hashPassword(userData.password);
-    console.log('Generated Hash (during registration):', hashedPassword);
 
     const newUser = await this.usersService.create({
       ...userData,
       password: hashedPassword,
     });
 
-    return this.extractUserData(newUser);
+    return {
+      message: '¡Registro Exitoso!',
+      username: newUser.username,
+    };
   } 
 
   // Método para iniciar sesión // login anterior
@@ -63,6 +74,7 @@ async login({email, password}:LoginUserDto) {
 
   const token = await this.jwtService.signAsync(payload);
   return { 
+    message: '¡Login exitoso!',
     access_token: token
   }
 
@@ -79,11 +91,11 @@ async login({email, password}:LoginUserDto) {
   }
 
   // Método privado para extraer información del usuario
-  private extractUserData(user: any): { id: number; username: string; email: string } {
-    return {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-    };
-  }
+  // private extractUserData(user: any): { id: number; username: string; email: string } {
+  //   return {
+  //     id: user.id,
+  //     username: user.username,
+  //     email: user.email,
+  //   };
+  // }
 }

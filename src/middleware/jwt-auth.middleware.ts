@@ -17,7 +17,7 @@ export class JwtAuthMiddleware implements NestMiddleware {
     const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
-      throw new UnauthorizedException('Token not provided');
+      throw new UnauthorizedException('Token no proporcionado');
     }
 
     try {
@@ -26,9 +26,9 @@ export class JwtAuthMiddleware implements NestMiddleware {
       next();
     } catch (error) {
       if (error instanceof Error) {
-        throw new UnauthorizedException(`Invalid token: ${error.message}`);
+        throw new UnauthorizedException(`Token invalido: ${error.message}`);
       }
-      throw new UnauthorizedException('Invalid token'); // Manejo de error por defecto
+      throw new UnauthorizedException('Token invalido'); // Manejo de error por defecto
     }
   }
 }
