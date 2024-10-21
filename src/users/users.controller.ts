@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Param, Patch, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/user.entity';
 
@@ -21,19 +21,20 @@ export class UsersController {
     
     // Endpoint para obtener un usuario por ID
     @Get(':id')
-    async findOne(@Param('id') id: number): Promise<User> {
-        return this.usersService.findById(id);
+    async findOne(@Param('id') id: string): Promise<User> {
+        const userId = parseInt(id); // Convierte el ID a número
+        return this.usersService.findById(userId);
     }
 
     // Endpoint para actualizar un usuario
-    @Patch(':id')
-    async update(@Param('id') id: number, @Body() userData: Partial<User>): Promise<User> {
-        return this.usersService.update(id, userData);
+    async update(@Param('id') id: string, @Body() userData: Partial<User>): Promise<User> {
+        const userId = parseInt(id); // Convierte el ID a número
+        return this.usersService.update(userId, userData);
     }
 
     // Endpoint para eliminar un usuario
-    @Delete(':id')
-    async remove(@Param('id') id: number): Promise<void> {
-        return this.usersService.remove(id);
+    async remove(@Param('id') id: string): Promise<void> {
+        const userId = parseInt(id); // Convierte el ID a número
+        return this.usersService.remove(userId);
     }
 }

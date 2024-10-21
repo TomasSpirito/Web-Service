@@ -90,12 +90,4 @@ async login({email, password}:LoginUserDto) {
     return await bcryptjs.compare(plainPassword, hashedPassword);
   }
 
-  // Método privado para extraer información del usuario
-  // private extractUserData(user: any): { id: number; username: string; email: string } {
-  //   return {
-  //     id: user.id,
-  //     username: user.username,
-  //     email: user.email,
-  //   };
-  // }
 }
